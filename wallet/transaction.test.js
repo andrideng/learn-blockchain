@@ -22,8 +22,16 @@ describe('Transaction', () => {
     });
 
     it('inputs the balance of the wallet', () => {
-        console.log(transaction.input);
         expect(transaction.input.amount).toEqual(wallet.balance);
+    });
+
+    it('validates a valid transaction', () => {
+        expect(Transaction.verifyTransaction(transaction)).toBeTruthy();
+    });
+
+    it('invalidates a corrupt transaction', () => {
+        transaction.outputs[0].amount = 50000;
+        expect(Transaction.verifyTransaction(transaction)).toBeFalsy();
     });
 
     describe('transaction with an amount that exceeds the balance', () => {
